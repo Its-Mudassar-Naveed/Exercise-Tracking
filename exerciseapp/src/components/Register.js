@@ -3,27 +3,51 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { Link } from "react-router-dom";
+import { Toaster } from 'react-hot-toast';
+
+
 function Register()
 {
+
     const [firstName,setFirstName] = useState('');
     const [lastName,setLastName] = useState('');
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
     const register =()=>{
+        // const data = {firstName,lastName,email,password};
         if(!firstName || !lastName || !email || !password )
         {
             toast.error("Please fill all fields");
             return 
         }
-        axios.post('http://localhost:8080/post', {
+        else
+        {
+          // axios({
+          //     method:"post",
+          //     url:"http://localhost:8080/post",
+          //     data:data,
+          //     headers:{
+          //         'Content-Type':'application/json'
+          //     }
+          // })
+          axios.post('http://localhost:8080/post', {
             firstName,lastName,email,password
           })
           .then(function (response) {
             console.log(response);
+            if(response.data.status===true)
+            {
+              toast.success(response.data.message)
+            }else if(response.data.status===false)
+            {
+              toast.error(response.data.message)
+            }
           })
           .catch(function (error) {
             console.log(error);
           });
+        } 
     }
     return (
       <>
@@ -65,10 +89,16 @@ function Register()
             required/>
           </Form.Group>
           <Form.Group>
-          <Button variant="primary" type="submit"  onClick={register}>
+          <Button variant="primary" type="button"  onClick={register}>
               Submit
          </Button>
+         <Button variant="" className="m-4">
+          <Link to='/login'>Already Have Account </Link>
+          </Button>
          </Form.Group>
+         
+       
+          <Toaster/>
         </Form>
       </>
     );
