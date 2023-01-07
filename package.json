@@ -1,0 +1,24 @@
+{
+  "name": "Exercise-Tracking",
+  "version": "1.0.0",
+  "description": "This is task base repo and will hold exercise tracking application code",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Its-Mudassar-Naveed/Exercise-Tracking.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Its-Mudassar-Naveed/Exercise-Tracking/issues"
+  },
+  "homepage": "https://github.com/Its-Mudassar-Naveed/Exercise-Tracking#readme"
+}
