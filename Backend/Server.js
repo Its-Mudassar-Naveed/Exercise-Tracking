@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
-var cors = require('cors')
+const cors = require('cors')
+const randomize = require('randomatic');
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
@@ -20,6 +21,7 @@ const userSchema = new Schema({
   lastName: { type: String, require: true },
   email: { type: String, require: true },
   password: { type: String, require: true },
+  token:Number
 });
 // creating model to use this schema
 const User = mongoose.model("User", userSchema);
@@ -58,22 +60,47 @@ app.post('/login', (req,res)=>
     res.status(400).send({status:false,message:"Login Email And Password Required"})
   }else
   {
-    res.status(200).send({status:true,message:"User Found"})
+    res.status(200).send({status:true,message:" Record Found"})
   }
 
 })
 
+
 app.post('/forget',(req,res)=>
 {
   const {email} = req.body;
-  if(!email)
+  console.log(req.body)
+  //Find the user with the matching email
+  User.findOne({email:email},(err,userWithMail)=>
   {
-    res.status(400).send({status:false,message:"Email is required"});
-  }else
-  {
-    res.status(200).send({status:true,message:"Email found"});
-  }
-  console.log(email);
+    if(err)
+    {
+      res.status(500).send({ error: 'Error finding user with email: ' + email });
+      console.log(err);
+    }
+    else if(userWithMail)
+    {
+      res.status(200).send({status:true,message:"Email Found "});
+      //Generating the random token
+      const token = randomize('0', 8);
+      console.log(token);
+      console.log(userWithMail)
+      userWithMail.updateOne({email: req.body.email },  { $set: { randomToken:token } }, (error) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Update successful',userWithMail);
+        }
+      });
+  
+
+    }else
+    {
+      res.status(404).send({status:false,message:"Email Not Found"});
+      console.log("Not Found")
+    }
+  })
+
 })
 
 

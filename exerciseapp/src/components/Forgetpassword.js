@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Toaster } from 'react-hot-toast';
 import toast from 'react-hot-toast';
+import axios from "axios";
 function Forgetpassword()
 {
     const [email,setEmail] = useState('');
@@ -14,7 +15,22 @@ function Forgetpassword()
         }
         else
         {
-            toast.success("Email Found")
+            axios.post('http://localhost:8080/forget', {
+                email
+              })
+              .then(function (response) {
+                console.log(response);
+                if(response.data.status===true)
+                {
+                  toast.success(response.data.message);
+                }else if(response.data.status===true)
+                {
+                  toast.error(response.data.message);
+                }
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
         }
     }
 return(
