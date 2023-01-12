@@ -1,36 +1,24 @@
-import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
 import Register from './components/Register';
 import Login from './components/Login';
 import Forgetpassword from "./components/Forgetpassword";
-import Container from 'react-bootstrap/Container';
-
-
+import Userprofile from "./components/Userprofile";
+import Navigation from "./components/Navigation"
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 function App() {
   return (
+    <>
 
-    // <Container>
-      
-    //   <Register/>
-    //   <Login/>
-    // </Container>
+    <BrowserRouter>
+    <Navigation/>
+    <Routes>
+      <Route path='/' element={<Register/>}></Route>
+      <Route path='/login' element={<Login/>}></Route>
+      <Route path='/forget' element={<Forgetpassword/>}></Route>
 
-<BrowserRouter>
-<Routes>
-  
-  <Route path="/" element={<Register/>}></Route>
-  <Route path="/login" element={<Login/>}></Route>
-  <Route path="/forget" element={<Forgetpassword/>}></Route>
-  
-  {/* <Route path="/login" element={<Login/>}></Route> */}
-</Routes>
-</BrowserRouter>
-
-
-
-
-
+    </Routes>
+    </BrowserRouter>
+      </>
   );
 }
 

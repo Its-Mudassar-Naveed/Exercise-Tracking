@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import { Toaster } from 'react-hot-toast';
 import toast from 'react-hot-toast';
 import axios from "axios";
+import { Container } from "react-bootstrap";
 function Forgetpassword()
 {
     const [email,setEmail] = useState('');
@@ -15,7 +16,7 @@ function Forgetpassword()
         }
         else
         {
-            axios.post('http://localhost:8080/forget', {
+          axios.post('http://localhost:8080/forget', {
                 email
               })
               .then(function (response) {
@@ -35,20 +36,24 @@ function Forgetpassword()
     }
 return(
     <>
-    <h1>Forget Password</h1>
-    <Form.Group className="mb-3" controlId="">
-            <Form.Label>Email</Form.Label>
-            <Form.Control type="email" placeholder="john@gmail.com" 
-            value={email} 
-            onChange={(e)=>setEmail(e.target.value)}
-            required/>
-     </Form.Group>
-     <Form.Group>
-        <Button variant="primary" type="button"  onClick={forget}>
-              Submit
-         </Button>
-         </Form.Group>
+    <Container>
+    <h1 className="text-center">Forget Password</h1>
+    <Form>
+        <Form.Group className="mb-3" controlId="">
+                <Form.Label>Email</Form.Label>
+                <Form.Control type="email" placeholder="john@gmail.com" 
+                value={email} 
+                onChange={(e)=>setEmail(e.target.value)}
+                required/>
+        </Form.Group>
+        <Form.Group>
+            <Button variant="primary" type="button"  onClick={forget}>
+                  Submit
+            </Button>
+        </Form.Group>
          <Toaster/>
+    </Form>
+    </Container>
     </>
 );
 }

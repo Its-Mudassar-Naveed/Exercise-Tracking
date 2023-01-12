@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { Link } from "react-router-dom";
 import { Toaster } from 'react-hot-toast';
+import { Container } from "react-bootstrap";
 
 
 function Register()
@@ -51,7 +52,8 @@ function Register()
     }
     return (
       <>
-        <h1>Registration Form</h1>
+      <Container>
+        <h1 className="text-center">Registration Form</h1>
         <Form>
           <Form.Group className="mb-3" controlId="">
             <Form.Label>First Name</Form.Label>
@@ -100,6 +102,7 @@ function Register()
        
           <Toaster/>
         </Form>
+        </Container>
       </>
     );
 
