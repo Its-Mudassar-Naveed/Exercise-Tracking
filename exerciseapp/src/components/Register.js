@@ -6,7 +6,7 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 import { Toaster } from 'react-hot-toast';
 import { Container } from "react-bootstrap";
-
+import { useNavigate } from "react-router-dom";
 
 function Register()
 {
@@ -15,6 +15,7 @@ function Register()
     const [lastName,setLastName] = useState('');
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
+    const navigate = useNavigate();
     const register =()=>{
         // const data = {firstName,lastName,email,password};
         if(!firstName || !lastName || !email || !password )
@@ -40,6 +41,8 @@ function Register()
             if(response.data.status===true)
             {
               toast.success(response.data.message)
+              navigate('/login');
+
             }else if(response.data.status===false)
             {
               toast.error(response.data.message)
@@ -105,6 +108,5 @@ function Register()
         </Container>
       </>
     );
-
 }
 export default Register;

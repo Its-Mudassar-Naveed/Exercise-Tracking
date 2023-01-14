@@ -6,15 +6,20 @@ import Form from "react-bootstrap/Form";
 import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 // import axios from 'axios';
 function Login() {
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const loginUser = () => {
     if (!email || !password) {
       toast.error("Please Enter The Fields");
       return;
     } else {
+      // const token = "RANDOM";
       axios.post("http://localhost:8080/login",
           {
             email,
@@ -23,6 +28,7 @@ function Login() {
           {
             headers: {
               "Content-Type": "application/x-www-form-urlencoded",
+              
             },
           }
         )
@@ -31,29 +37,18 @@ function Login() {
           if(response.data.status===true)
           {
             toast.success(response.data.message);
+            console.log("response.data.data.authToken",response.data.data.authToken);
+            const token = response.data.data.authToken
+            localStorage.clear()
+            localStorage.setItem('token',token);
+            navigate('/userprofile');
+
           }
           else if(response.data.status===false)
           {
             toast.error(response.data.message);
           }
         });
-
-      // axios.post('http://localhost:8080/login', {
-      //     email,password
-      //   })
-      //   .then(function (response) {
-      //     console.log(response);
-      //     if(response.data.status===true)
-      //     {
-      //       toast.success(response.data.message);
-      //     }else if(response.data.status===true)
-      //     {
-      //       toast.error(response.data.message);
-      //     }
-      //   })
-      //   .catch(function (error) {
-      //     console.log(error);
-      //   });
     }
   };
   return (

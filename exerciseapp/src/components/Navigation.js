@@ -14,7 +14,7 @@ function Navigation() {
             <NavLink href="#home" to="/" >Home</NavLink>
             </Nav.Link>
             <Nav.Link>
-            <NavLink href="#Login" to="/login">Login</NavLink>
+            <NavLink href="#Login" to="/login"></NavLink>
             </Nav.Link>
           </Nav>
         </Container>
