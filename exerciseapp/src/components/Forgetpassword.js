@@ -24,6 +24,7 @@ function Forgetpassword()
                 if(response.data.status===true)
                 {
                   toast.success(response.data.message);
+                  
                 }else if(response.data.status===true)
                 {
                   toast.error(response.data.message);

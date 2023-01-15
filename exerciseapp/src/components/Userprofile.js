@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { Toaster } from "react-hot-toast";
 import { Button, } from "react-bootstrap";
+// import { Navigate, useNavigate } from "react-router-dom";
 function Userprofile() {
   const profileInfo = {
     firstName:'',
@@ -17,20 +18,10 @@ function Userprofile() {
     height:'',
     weight:'',
   }
-  
-  const [id, setId] = useState("");
   const [data, setData] = useState(profileInfo);
-  const [updater,setUpdater] = useState(profileInfo);
-
-
   useEffect(() => {
    getData();
-    
-  
   },[]);
-
-
-
 
   // Handling input field change
   // const onValueChange = (e) => {
@@ -39,8 +30,7 @@ function Userprofile() {
   //   setUpdater({ ...updater, [e.target.name]: e.target.value });
   //   console.log(updater);
   // };
-
-  const getData = async () => {
+   const getData = async () => {
     try {
       const gettoken = localStorage.getItem('token')
       console.log("gettoken",gettoken)
@@ -102,6 +92,9 @@ function Userprofile() {
         </div>
         <Button variant="secondary" >
             Update Info 
+          </Button>
+          <Button variant="secondary" className="m-3">
+           Logout 
           </Button>
         </Form>
         <Toaster />

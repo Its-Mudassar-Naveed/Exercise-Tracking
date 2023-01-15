@@ -9,6 +9,9 @@ const jwt = require("jsonwebtoken");
 const SECRET_KEY = "RANDOM";
 const { Schema } = mongoose;
 const auth = require("./middleware/auth");
+const nodemailer = require("nodemailer");
+
+
 //Creating Connection To DB
 mongoose.connect(
   "mongodb://Testdb:mudassir123@ac-fi1qm2h-shard-00-00.jgu2rjs.mongodb.net:27017,ac-fi1qm2h-shard-00-01.jgu2rjs.mongodb.net:27017,ac-fi1qm2h-shard-00-02.jgu2rjs.mongodb.net:27017/exercise?ssl=true&replicaSet=atlas-14hsb5-shard-0&authSource=admin&retryWrites=true&w=majority"
@@ -85,7 +88,7 @@ app.post("/login", async (req, res) => {
       const authToken = jwt.sign(
         { email: existingUser.email, id: existingUser._id },
         SECRET_KEY,
-        { expiresIn: "975456666600" }
+        { expiresIn: "1d" }
       );
       // localStorage.setItem("token" ,authToken);
       res.status(200).send({
@@ -112,7 +115,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-//Forget api
+//Forget Password api with nodemailer
 app.post("/forget", async (req, res) => {
   const { email } = req.body;
   //Find the user with the matching email
@@ -121,9 +124,26 @@ app.post("/forget", async (req, res) => {
     // token genrate
     const token = randomize("0", 10);
     await User.findOneAndUpdate({ email: email }, { token });
-    res
-      .status(200)
-      .send({ status: true, message: "User Found And Token added" });
+    let testAccount = await nodemailer.createTestAccount();
+    let transporter = nodemailer.createTransport({
+      host: "smtp.ethereal.email",
+      port: 587,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: 'torrance.cassin@ethereal.email',
+        pass: '4YR8PMt4K4fPhd6UQr'
+    },
+    });
+      // send mail with defined transport object
+  let info = await transporter.sendMail({
+    from: '"Fred Foo 👻" <foo@example.com>', // sender address
+    to: email, // list of receivers
+    subject: "Forget Password", // Subject line
+    text: token, // plain text body
+    html: token, // html body
+  });
+  console.log("Message sent: %s", info.messageId);
+    res.status(200).send({ status: true, message: "User Found And Token added" });
     console.log("Token Added");
   } else {
     res.status(404).send({ status: false, message: "User Not Found" });
@@ -150,16 +170,45 @@ app.get("/profile", auth, async (req, res) => {
   console.log("Profile Api is called");
   res.status(200).send({ status: true, message: "Api Called" });
 });
-
-// Create An Api For Getting Specfic
-//  User information based on id
-//Get Api Getting with specific id
-app.get("/:id", async (req, res) => {
-  // const findWithId = await User.findById(req.params.id);
-  User.findById(req.params.id)
-    .then((user) => res.json(user).pretty())
-    .catch((err) => res.status(404).json({ success: false }));
+//API to Create Activity 
+//Schema Here
+const taskSchema = new Schema({
+  date: { type: String, required: true },
+  type: { type: String, require: true },
+  duration: { type: String, require: true },
+  comment: { type: String, require: true },
 });
+// creating model to use this schema
+const Task = mongoose.model("Task", taskSchema);
+app.post ('/createActivity', async(req,res)=>
+{
+  const task = req.body;
+  const {date, type,duration,comment} = req.body;
+  await Task.create(task);
+  let token = await req.headers.authorization;
+  try {
+    token = token.split(" ")[1];
+    console.log("Token", token);
+    var decoded = jwt.decode(token, SECRET_KEY);
+    console.log("decoded", decoded);
+    console.log("decodedID", decoded.id);
+    const userID = decoded.id;
+    console.log("User ID", userID);
+    res.status(200).send({ status: true, message:"Activity Added" });
+  } catch (error) {
+    console.log(error);
+  }
+
+
+  console.log(req.body)
+  res.send("data")
+})
+
+
+
+
+
+
 
 const PORT = 8080;
 app.listen(PORT, () => {

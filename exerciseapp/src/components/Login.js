@@ -41,7 +41,8 @@ function Login() {
             const token = response.data.data.authToken
             localStorage.clear()
             localStorage.setItem('token',token);
-            navigate('/userprofile');
+            // navigate('/userprofile');
+            navigate('/addActivity');
 
           }
           else if(response.data.status===false)
