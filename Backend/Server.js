@@ -10,8 +10,6 @@ const SECRET_KEY = "RANDOM";
 const { Schema } = mongoose;
 const auth = require("./middleware/auth");
 const nodemailer = require("nodemailer");
-
-
 //Creating Connection To DB
 mongoose.connect(
   "mongodb://Testdb:mudassir123@ac-fi1qm2h-shard-00-00.jgu2rjs.mongodb.net:27017,ac-fi1qm2h-shard-00-01.jgu2rjs.mongodb.net:27017,ac-fi1qm2h-shard-00-02.jgu2rjs.mongodb.net:27017/exercise?ssl=true&replicaSet=atlas-14hsb5-shard-0&authSource=admin&retryWrites=true&w=majority"
@@ -22,9 +20,15 @@ app.get("/", (req, res) => {
 //Schema Here
 const userSchema = new Schema({
   firstName: { type: String, required: true },
-  lastName: { type: String, require: true },
-  email: { type: String, require: true },
-  password: { type: String, require: true },
+  lastName: { type: String, required: true },
+  gender:{type:String},
+  email: { type: String, required: true },
+  country:{type:String},
+  city:{type:String},
+  dob:{type:String},
+  height:{type:String},
+  weight:{type:String},
+  password: { type: String, required: true },
   token: { type: Number },
 });
 // creating model to use this schema
@@ -70,13 +74,13 @@ app.post("/post", async (req, res) => {
 });
 //login api
 app.post("/login", async (req, res) => {
-  console.log("Login API Called");
+  // console.log("Login API Called");
   console.log(req.body);
   const email = req.body.email;
   const password = req.body.password;
 
   const existingUser = await User.findOne({ email: email });
-  console.log("existingUser", existingUser);
+  // console.log("existingUser", existingUser);
   const matchPassword = await bcrypt.compare(password, existingUser.password);
   try {
     if (!email || !password) {
@@ -144,7 +148,7 @@ app.post("/forget", async (req, res) => {
   });
   console.log("Message sent: %s", info.messageId);
     res.status(200).send({ status: true, message: "User Found And Token added" });
-    console.log("Token Added");
+    // console.log("Token Added");
   } else {
     res.status(404).send({ status: false, message: "User Not Found" });
   }
@@ -154,12 +158,12 @@ app.get("/profile", auth, async (req, res) => {
   let token = await req.headers.authorization;
   try {
     token = token.split(" ")[1];
-    console.log("Token", token);
+    // console.log("Token", token);
     var decoded = jwt.decode(token, SECRET_KEY);
-    console.log("decoded", decoded);
-    console.log("decodedID", decoded.id);
+    // console.log("decoded", decoded);
+    // console.log("decodedID", decoded.id);
     const userID = decoded.id;
-    console.log("User ID", userID);
+    // console.log("User ID", userID);
     const user = await User.findOne({ _id: userID });
     if (!user) return res.status(404).send({ status: false, message: "User not found" });
     res.status(200).send({ status: true, user });
@@ -167,7 +171,7 @@ app.get("/profile", auth, async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-  console.log("Profile Api is called");
+  // console.log("Profile Api is called");
   res.status(200).send({ status: true, message: "Api Called" });
 });
 //API to Create Activity 
@@ -182,6 +186,7 @@ const taskSchema = new Schema({
 const Task = mongoose.model("Task", taskSchema);
 app.post ('/createActivity', async(req,res)=>
 {
+  console.log(userID);
   const task = req.body;
   const {date, type,duration,comment} = req.body;
   await Task.create(task);
@@ -198,17 +203,9 @@ app.post ('/createActivity', async(req,res)=>
   } catch (error) {
     console.log(error);
   }
-
-
   console.log(req.body)
   res.send("data")
 })
-
-
-
-
-
-
 
 const PORT = 8080;
 app.listen(PORT, () => {

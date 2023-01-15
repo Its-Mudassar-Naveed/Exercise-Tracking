@@ -18,18 +18,37 @@ function Userprofile() {
     height:'',
     weight:'',
   }
-  const [data, setData] = useState(profileInfo);
+const[firstName,setFirstName] = useState('');
+const[lastName,setLasttName] = useState('');
+const[gender,setGender] = useState('');
+const[email,setemail] = useState('');
+const[country,setCountry] = useState('');
+const[city,setCity] = useState('');
+const[dob,setDOB] = useState('');
+const[height,setHeight] = useState('');
+const[weight,setWeight] = useState('');
+const [data, setData] = useState(profileInfo);
   useEffect(() => {
    getData();
   },[]);
 
-  // Handling input field change
-  // const onValueChange = (e) => {
-  //   e.preventDefault();
-  //   console.log(e.target.name, e.target.value);
-  //   setUpdater({ ...updater, [e.target.name]: e.target.value });
-  //   console.log(updater);
-  // };
+    //Update Profile
+    const updateProfile = ()=>
+    {
+      console.log("data",firstName,lastName,gender,email,country,city, dob,height,weight);
+      axios.put('http://localhost:8080/put', {
+        firstName,lastName,gender,email,country,city, dob,height,weight
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+  
+      
+    }
    const getData = async () => {
     try {
       const gettoken = localStorage.getItem('token')
@@ -62,35 +81,35 @@ function Userprofile() {
         <Form>
           <Form.Group className="mb-3" controlId="">
             <Form.Label>First Name</Form.Label>
-            <Form.Control type="text" value={data.firstName}/>
+            <Form.Control type="text" value={data.firstName} onChange={(e)=>setFirstName(e.target.value)}/>
             <br/>
             <Form.Label>Last Name</Form.Label>
-            <Form.Control type="text" value={data.lastName} />
+            <Form.Control type="text" value={data.lastName}  onChange={(e)=>setLasttName(e.target.value)}/>
             <br/>
             <Form.Label>Gender</Form.Label>
-            <Form.Control type="text" placeholder="Gender" />
+            <Form.Control type="text" placeholder="Gender" value={gender} onChange={(e)=>setGender(e.target.value)}/>
             <br/>
             <Form.Label>Email</Form.Label>
-            <Form.Control type="text" value={data.email} />
+            <Form.Control type="text" value={data.email}  onChange={(e)=>setemail(e.target.value)}/>
             <br/>
             <Form.Label>Country</Form.Label>
-            <Form.Control type="text" placeholder="country" />
+            <Form.Control type="text" placeholder="country" value={country} onChange={(e)=>setCountry(e.target.value)}/>
             <br/>
             <Form.Label>City</Form.Label>
-            <Form.Control type="text" placeholder="city" />
+            <Form.Control type="text" placeholder="city" value={city} onChange={(e)=>setCity(e.target.value)} />
             <br/>
             <Form.Label>DOB</Form.Label>
-            <Form.Control type="text" placeholder="dob" />
+            <Form.Control type="date" placeholder="dob" value={dob} onChange={(e)=>setDOB(e.target.value)} />
             <br/>
             <Form.Label>Height</Form.Label>
-            <Form.Control type="text" placeholder="Height" />
+            <Form.Control type="text" placeholder="Height"  value={height} onChange={(e)=>setHeight(e.target.value)}/>
             <br/>
             <Form.Label>Weight</Form.Label>
-            <Form.Control type="text" placeholder="Weight"  />
+            <Form.Control type="text" placeholder="Weight"  value={weight} onChange={(e)=>setWeight(e.target.value)}/>
           </Form.Group>
           <div>
         </div>
-        <Button variant="secondary" >
+        <Button variant="secondary" onClick={updateProfile}>
             Update Info 
           </Button>
           <Button variant="secondary" className="m-3">

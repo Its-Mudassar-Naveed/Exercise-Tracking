@@ -7,6 +7,7 @@ import Recover from './components/Recover';
 import Navigation from "./components/Navigation"
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Addactivities from './components/Addactivities';
+import Viewactivity from './components/Viewactivity';
 function App() {
   return (
     <>
@@ -20,6 +21,7 @@ function App() {
       <Route path='/userprofile' element={<Userprofile/>}></Route>
       <Route path='/reset' element={<Recover/>}></Route>
       <Route path='/addActivity' element={<Addactivities/>}></Route>
+      <Route path='/viewActivity' element={<Viewactivity/>}></Route>
     </Routes>
     </BrowserRouter>
       </>

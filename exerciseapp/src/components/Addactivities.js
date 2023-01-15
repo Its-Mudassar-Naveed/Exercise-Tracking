@@ -3,14 +3,26 @@ import { Container,Form,Button } from "react-bootstrap";
 import { Toaster } from "react-hot-toast";
 import toast from 'react-hot-toast';
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
 function Addactivities ()
 {
     const [date,setDate] = useState('');
     const [type,setType] = useState('');
     const [duration,setDuration] = useState('');
     const[comment,setComment] = useState('');
+    const navigate = useNavigate(); 
 
     //adding activity function
+    const viewProfile = ()=>
+    {
+      navigate('/userprofile');
+    }
+    const viewActivities = ()=>
+    {
+      navigate('/viewActivity');
+    }
     const addActivity = async ()=>
     {
         console.log("Added",date,type,duration,comment);
@@ -36,7 +48,20 @@ function Addactivities ()
     return(
     <>
     <Container>
-        <h1 className="text-center">Add Your Activity</h1>
+    <Navbar bg="" variant="dark">
+        <Container>
+          <Navbar.Brand href="#home">Exercise Tracking Application</Navbar.Brand>
+          <Nav className="mr-auto">
+            <Nav.Link>
+            <Button variant="secondary"  onClick={viewProfile}> View Profile</Button>
+            </Nav.Link>
+            <Nav.Link>
+            <Button variant="secondary"  onClick={viewActivities}> View Activity</Button>
+            </Nav.Link>
+          </Nav>
+        </Container>
+      </Navbar>
+   <h1 className="text-center">Add Your Activity</h1>
         <Form>
       <Form.Group className="mb-3" controlId="">
         <Form.Label>Activity Date</Form.Label>
