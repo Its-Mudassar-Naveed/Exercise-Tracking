@@ -36,7 +36,7 @@ const [data, setData] = useState(profileInfo);
     const updateProfile = ()=>
     {
       console.log("data",firstName,lastName,gender,email,country,city, dob,height,weight);
-      axios.put('http://localhost:8080/put', {
+      axios.put('http://localhost:8080/update/:id', {
         firstName,lastName,gender,email,country,city, dob,height,weight
       })
       .then(function (response) {
@@ -45,10 +45,7 @@ const [data, setData] = useState(profileInfo);
       .catch(function (error) {
         console.log(error);
       });
-
-  
-      
-    }
+   }
    const getData = async () => {
     try {
       const gettoken = localStorage.getItem('token')
@@ -57,10 +54,10 @@ const [data, setData] = useState(profileInfo);
       {
         headers: { Authorization: `Bearer ${gettoken}` }
       });
-      console.log("Response",response.data.user);
-      console.log(response.data);//showing JWT Token
+      // console.log("Response",response.data.user);
+      // console.log(response.data);//showing JWT Token
       setData(response.data.user);
-      console.log("set Data",setData);
+      // console.log("set Data",setData);
       if (response.status === 200) {
         toast.success(response.data.statusText);
       } 
@@ -87,25 +84,25 @@ const [data, setData] = useState(profileInfo);
             <Form.Control type="text" value={data.lastName}  onChange={(e)=>setLasttName(e.target.value)}/>
             <br/>
             <Form.Label>Gender</Form.Label>
-            <Form.Control type="text" placeholder="Gender" value={gender} onChange={(e)=>setGender(e.target.value)}/>
+            <Form.Control type="text" placeholder="Gender" value={data.gender} onChange={(e)=>setGender(e.target.value)}/>
             <br/>
             <Form.Label>Email</Form.Label>
             <Form.Control type="text" value={data.email}  onChange={(e)=>setemail(e.target.value)}/>
             <br/>
             <Form.Label>Country</Form.Label>
-            <Form.Control type="text" placeholder="country" value={country} onChange={(e)=>setCountry(e.target.value)}/>
+            <Form.Control type="text" placeholder="country" value={data.country} onChange={(e)=>setCountry(e.target.value)}/>
             <br/>
             <Form.Label>City</Form.Label>
-            <Form.Control type="text" placeholder="city" value={city} onChange={(e)=>setCity(e.target.value)} />
+            <Form.Control type="text" placeholder="city" value={data.city} onChange={(e)=>setCity(e.target.value)} />
             <br/>
             <Form.Label>DOB</Form.Label>
-            <Form.Control type="date" placeholder="dob" value={dob} onChange={(e)=>setDOB(e.target.value)} />
+            <Form.Control type="date" placeholder="dob" value={data.dob} onChange={(e)=>setDOB(e.target.value)} />
             <br/>
             <Form.Label>Height</Form.Label>
-            <Form.Control type="text" placeholder="Height"  value={height} onChange={(e)=>setHeight(e.target.value)}/>
+            <Form.Control type="text" placeholder="Height"  value={data.height} onChange={(e)=>setHeight(e.target.value)}/>
             <br/>
             <Form.Label>Weight</Form.Label>
-            <Form.Control type="text" placeholder="Weight"  value={weight} onChange={(e)=>setWeight(e.target.value)}/>
+            <Form.Control type="text" placeholder="Weight"  value={data.weight} onChange={(e)=>setWeight(e.target.value)}/>
           </Form.Group>
           <div>
         </div>

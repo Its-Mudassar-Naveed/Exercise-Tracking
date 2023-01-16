@@ -21,13 +21,13 @@ app.get("/", (req, res) => {
 const userSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
-  gender:{type:String},
+  gender:{type:String,default: 'Male'},
   email: { type: String, required: true },
-  country:{type:String},
-  city:{type:String},
-  dob:{type:String},
-  height:{type:String},
-  weight:{type:String},
+  country:{type:String,default: 'Pak'},
+  city:{type:String,default: 'Lahore'},
+  dob:{type:String,default: '1-7-1999'},
+  height:{type:String,default: '5Ft'},
+  weight:{type:String,default: '50KG'},
   password: { type: String, required: true },
   token: { type: Number },
 });
@@ -40,7 +40,9 @@ app.use(cors({ origin: "*" }));
 //Post Api
 app.post("/post", async (req, res) => {
   const user = req.body;
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName,gender, email,country,city,dob,height,weight, password } = req.body;
+  console.log(req.body);
+
   const existingUser = await User.findOne({ email: email });
   if (!firstName || !lastName || !email || !password) {
     return res
@@ -66,6 +68,7 @@ app.post("/post", async (req, res) => {
           .send({
             status: true,
             message: "User added to the DataBase",
+            user,
             authToken,
           });
       });
@@ -206,7 +209,32 @@ app.post ('/createActivity', async(req,res)=>
   console.log(req.body)
   res.send("data")
 })
-
+//update api
+app.put('/update/:id', (req, res) => {
+  // Find the user by ID in the MongoDB database
+  User.findById(req.params.id, (err, user) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    // Update the user details
+    user.firstName = req.body.firstName;
+    user.lastName = req.body.lastName;
+    user.gender = req.body.gender;
+    user.email = req.body.email;
+    user.country = req.body.country;
+    user.city = req.body.city;
+    user.DOB = req.body.DOB;
+    user.height = req.body.height;
+    user.weight = req.body.weight;
+    // Save the updated user details in the MongoDB database
+    user.save((err, updatedUser) => {
+      if (err) {
+        return res.status(500).send(err);
+      }
+      res.send(updatedUser);
+    });
+  });
+});
 const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);
