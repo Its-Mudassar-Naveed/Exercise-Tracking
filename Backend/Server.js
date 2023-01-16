@@ -206,35 +206,33 @@ app.post ('/createActivity', async(req,res)=>
   } catch (error) {
     console.log(error);
   }
-  console.log(req.body)
-  res.send("data")
 })
 //update api
-app.put('/update/:id', (req, res) => {
-  // Find the user by ID in the MongoDB database
-  User.findById(req.params.id, (err, user) => {
-    if (err) {
-      return res.status(500).send(err);
-    }
-    // Update the user details
-    user.firstName = req.body.firstName;
-    user.lastName = req.body.lastName;
-    user.gender = req.body.gender;
-    user.email = req.body.email;
-    user.country = req.body.country;
-    user.city = req.body.city;
-    user.DOB = req.body.DOB;
-    user.height = req.body.height;
-    user.weight = req.body.weight;
-    // Save the updated user details in the MongoDB database
-    user.save((err, updatedUser) => {
-      if (err) {
-        return res.status(500).send(err);
-      }
-      res.send(updatedUser);
-    });
-  });
-});
+// app.put('/update/:id', (req, res) => {
+//   // Find the user by ID in the MongoDB database
+//   User.findById(req.params.id, (err, user) => {
+//     if (err) {
+//       return res.status(500).send(err);
+//     }
+//     // Update the user details
+//     user.firstName = req.body.firstName;
+//     user.lastName = req.body.lastName;
+//     user.gender = req.body.gender;
+//     user.email = req.body.email;
+//     user.country = req.body.country;
+//     user.city = req.body.city;
+//     user.DOB = req.body.DOB;
+//     user.height = req.body.height;
+//     user.weight = req.body.weight;
+//     // Save the updated user details in the MongoDB database
+//     user.save((err, updatedUser) => {
+//       if (err) {
+//         return res.status(500).send(err);
+//       }
+//       res.send(updatedUser);
+//     });
+//   });
+// });
 const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);
